@@ -9,28 +9,28 @@ class PWMpin:
 		print("Activating PWM")
 		if not os.path.exists('/sys/devices/platform/bone_capemgr/slots'):
 			with open('/sys/devices/platform/bone_capemgr/slots', 'w') as file:
-				file.write('cape-bone-iio') #test: cape-universaln or  cape-bone-iio  				
-		with open('/sys/devices/platform/ocp/ocp:P9_16_pinmux/state', 'w') as file:
-			file.write('pwm') 
-		if os.path.exists('/sys/class/pwm/pwmchip2/export'):
-			with open('/sys/class/pwm/pwmchip2/export', 'w') as file:
-				file.write('1')
+				file.write('cape-universaln') #test: cape-universaln or  cape-bone-iio  				
+		with open('/sys/devices/platform/ocp/ocp:P9_42_pinmux/state', 'w') as file:
+			file.write('pwm') #config-pin P9.42 pwm 
+		if os.path.exists('/sys/class/pwm/pwmchip6/export'):
+			with open('/sys/class/pwm/pwmchip6/export', 'w') as file:
+				file.write('0') #export pwm0, module ECAP0 at addr 48300100, one of few models that can take different period & dutycycles
 				
 	def setPwm(self):
 		print("setting PWM period and duty cycle")
-		with open('/sys/class/pwm/pwmchip2/pwm1/period', 'w') as file:
-			file.write('1000000000') #period
-		with open('/sys/class/pwm/pwmchip2/pwm1/duty_cycle', 'w') as file:
-			file.write('500000000') #dutycycle
+		with open('/sys/class/pwm/pwmchip6/pwm0/period', 'w') as file:
+			file.write('20000000') #period de 20 ms comme indique dans le datasheet,(unit = ns)
+		with open('/sys/class/pwm/pwmchip6/pwm0/duty_cycle', 'w') as file:
+			file.write('2000000') #impulsion de 2ms == Position '90' du serveur moteur SG90
 			
 	def enablePwm(self):
 		print("enable pwm")
-		with open('/sys/class/pwm/pwmchip2/pwm1/enable', 'w') as file:
-			file.write('1')
+		with open('/sys/class/pwm/pwmchip6/pwm0/enable', 'w') as file:
+			file.write('1') #lancez pwm
 			
 	def disablePwm(self):
 		print("disable pwm")
-		with open('/sys/class/pwm/pwmchip2/pwm1/enable', 'w') as file:
-			file.write('0')
-		with open('/sys/class/pwm/pwmchip2/unexport', 'w') as file:
-			file.write('1')
+		with open('/sys/class/pwm/pwmchip6/pwm0/enable', 'w') as file:
+			file.write('0') #arretez pwm
+		#with open('/sys/class/pwm/pwmchip2/unexport', 'w') as file:
+			#file.write('1')
