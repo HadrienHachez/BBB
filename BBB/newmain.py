@@ -1,7 +1,11 @@
-from lib import LED
+from lib import PWMpin
 
 print('ok')
-led = LED.LED('gpio60','60')
+pwmpin = PWMpin.PWMpin()
+pwmpin.disablePwm()
 print('ok1')
-led.Toggle(0.005)
+pwmpin.configurepin()
+pwmpin.setPwm()
+#while True:
+pwmpin.enablePwm
 print('ok2')
