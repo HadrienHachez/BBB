@@ -5,5 +5,5 @@ pwmpin = PWMpin.PWMpin()
 print('ok1')
 pwmpin.configurepin()
 pwmpin.setPwm()
-pwmpin.enablePwm
+pwmpin.enablePwm()
 print('ok2')
